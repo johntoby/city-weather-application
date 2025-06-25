@@ -11,6 +11,10 @@ app.use(express.json());
 app.get('/weather/:city', async (req, res) => {
   try {
     const city = req.params.city;
+    const validCities = ['New York', 'London', 'Paris', 'Tokyo', 'Sydney']; // Example allow-list
+    if (!validCities.includes(city)) {
+      return res.status(400).json({ error: 'Invalid city name' });
+    }
     const response = await axios.get(`https://wttr.in/${city}?format=j1`);
     const data = response.data;
     res.json({
